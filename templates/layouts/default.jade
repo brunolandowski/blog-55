@@ -1,0 +1,121 @@
+include ../mixins/flash-messages
+
+doctype html
+html
+
+	//- HTML HEADER
+	head
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1.0")
+		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+
+		title= title || 'fifty-five'
+		link(rel="shortcut icon", href="/favicon.ico", type="image/x-icon")
+
+		//- Customise the stylesheet for your site by editing /public/styles/site.sass
+		link(href="/styles/site.css", rel="stylesheet")
+		
+		//- This file provides the default styling for the KeystoneJS Content Editor
+		if user && user.canAccessKeystone
+			link(href="/keystone/styles/content/editor.min.css", rel="stylesheet")
+
+		//- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
+		//- Safely remove this block if you are not targeting IE8
+		//-[if lt IE 9]
+			script(src="//cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.js")
+			script(src="//cdn.jsdelivr.net/respond/1.4.2/respond.min.js")
+		//-[endif]
+
+		//- Include template-specific stylesheets by extending the css block
+		block css
+
+		//- Add any other template-specific HEAD tags by extending the head block
+		block head
+
+
+
+	//- HTML BODY
+	body
+		img.loader(alt="fifty-five loading..." src="/images/ball.svg")
+		.super-wrap
+			//- HEADER
+			header.main-header
+				div.left-col
+					a(href="/")
+						img(alt="fifty-five the data company" src="/images/logo-fifty-five.svg")
+				div.right-col
+					div.lang-selector en | fr
+					button.button-open-menu.isDown
+						img(alt="open navigation" src="/images/burger-menu.svg")
+		
+				//- Customise your site's navigation by changing the navLinks Array in ./routes/middleware.js
+				//- ... or completely change this header to suit your design.
+				
+			//- The content block should contain the body of your template's content
+			
+			block content
+			
+			//- LEGALS
+			.legals
+				.close-legals
+					img(alt="close legal" src="/images/close.svg") 
+				.row
+					h3 Édition 
+					p 55 SAS, 5&#8239;—&#8239;7 rue d'Athènes
+					p 75009 Paris
+					p 
+						a(href="tel:+33176219137") +33 1 76 21 91 37
+				.row
+					h3 Hébergement
+					p OVH SAS
+					p 2, rue Kellermann
+					p 59100 Roubaix
+					p
+						a(href="tel:+33820698765") +33 8 20 69 87 65
+				.row
+					h3 Concept &amp; design
+					p Bruno Landowski et 55
+				.row
+					h3 Développement 
+					p Baptiste Lemoine et 55
+				.row
+					h3 Gestion des cookies
+					p 
+						a(href="https://www.cnil.fr/fr/cookies-les-outils-pour-les-maitriser" target="_blank") En savoir plus sur le site de la CNIL
+
+			//- FOOTER
+			
+			footer#footer 
+				div.left-col
+					p 
+						| © #[a(href="http://fifty-five.com/" target="_blank") fifty-five the data company] | #[a(class="legalsopen") mentions légales ]
+				div.right-col
+					div.social-list
+						| #[a(href="https://www.facebook.com/55fiftyfive55/" target="_blank") facebook ] | #[a(href="https://twitter.com/55FiftyFive55" target="_blank") twitter ] | #[a(href="https://www.linkedin.com/company/fifty-five" target="_blank") linkedin ] 
+						
+
+
+			//- You don't _have_ to include a link saying your site is powered by KeystoneJS, but we appreciate it!
+			
+
+
+		//- JAVASCRIPT
+
+		//- jQuery 1.11.3 is included by default, and required by both Bootstrap
+		//- and the KeystoneJS Content Editor. If you are not targeting IE8,
+		//- you can upgrade to 2.1.4 (also bundled) for better performance.
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
+
+
+		//- Customise which Bootstrap javascript files are served by including
+		//- them specifically here, instead of bootstrap-3.3.5.min.js
+
+		//- Add scripts that are globally required by your site here.
+		script(src='/js/script.js')
+		script(src='https://unpkg.com/masonry-layout@4.1/dist/masonry.pkgd.min.js')
+		script(src='https://npmcdn.com/imagesloaded@4.1/imagesloaded.pkgd.min.js')
+		script(src='/js/ototypo.js')
+
+		
+		//- Include template-specific javascript files by extending the js block
+		block js

@@ -1,0 +1,122 @@
+extends ../layouts/default
+
+block content
+	if data.categories.length
+		nav
+			.wrap-nav
+				.nav-left
+					h3 Tags
+					
+					ul
+
+						each taggy in data.tags
+							a(href='/tag/' + taggy.key,)
+								li #{taggy.name}
+						
+				.nav-middle
+					h3 Categories
+				
+					ul
+						each cat in data.categories
+							li
+								span(style="background:#{cat.color};")
+								a(href='/cat/' + cat.key, class=data.category && data.category.id == cat.id ? 'active' : false)= cat.name
+								
+
+				.nav-right 
+					input(type="text" placeholder="search")
+
+	if data.post.image.exists
+		if data.post.categories && data.post.categories.length
+			| 
+		each cat, cat_i in data.post.categories
+			.img-header(data-align="#{data.post.VerticalAlignImg}" style="background-color:#{cat.color};background-image:url('#{data.post._.image.fit(1500,1500)}');")
+		if cat_i < data.post.categories.length - 1
+			| 
+		else
+			| 
+			
+	.wrap-post-view
+		aside
+			.aside-post-view-wrap
+				if data.post.categories && data.post.categories.length
+					| 
+				each cat, cat_i in data.post.categories
+					a(style="color:#{cat.color};" href='/cat/' + cat.key)= cat.name
+				if cat_i < data.post.categories.length - 1
+					| 
+				else
+					|  
+				
+				if data.post.tags && data.post.tags.length
+					ul.tags-list
+						| 
+						each taggy, i in data.post.tags
+							| 
+							a(href='/tag/' + taggy.key,)
+								li #{taggy.name}
+
+
+				
+
+				.auteur
+					
+					if data.post.auteur && data.post.auteur.length
+						| 
+						each aut, i in data.post.auteur
+							| 
+							if aut.image.exists
+							.wrapauteur
+								.img-placeholder(style="background-image:url('#{aut._.image.fit(100,100)}');")
+								.auteurText
+									a(href='/author/' + aut.key,)
+										h4 #{aut.name}
+									span  — #{aut.position}
+
+				.social-share
+					
+						
+					ul
+						li 
+							img(src='/images/facebook.svg')
+							a(target="_blank" href='https://www.facebook.com/sharer/sharer.php?u=http://fifty-five.com/'+ data.post.slug) Share on Facebook
+							
+						li 
+							img(src='/images/twitter.svg')
+							a(target="_blank" href='https://www.facebook.com/sharer/sharer.php?u=http://fifty-five.com/'+ data.post.slug) Share on Twitter
+							
+						li 
+							img(src='/images/linkedin.svg')
+							a(target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=http://fifty-five.com"+ data.post.slug +"&title="+ data.post.title +"&summary="+ data.post.content.brief +"&source=") Share on Linkedin
+							
+
+		section.post-view
+			h2= data.post.title
+			.intro
+				p!= data.post.content.brief
+			.extended
+				p!= data.post.content.extended
+
+		.comment 
+			.first-line
+				h4 Learn more
+				p.alert-form
+			form.contact-form
+				input(type="hidden" id="inputArticle" name="article" value="#{data.post.title}")
+				textarea(id="inputComment" name="comment")
+				
+				.send-it
+					input(id="inputEmail" type="email" name="email" placeholder="My email")
+					button(type="submit") Send
+	
+		.right-view 
+			p #{data.post._.publishedDate.format('MMMM Do, YYYY')}
+		
+		if data.post.categories && data.post.categories.length
+				| 
+			each cat, cat_i in data.post.categories
+				.percentage(style="background:#{cat.color};")
+			if cat_i < data.post.categories.length - 1
+				| 
+			else
+				| 

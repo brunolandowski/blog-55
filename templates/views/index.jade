@@ -1,0 +1,136 @@
+extends ../layouts/default
+
+mixin post(post)
+	section.home
+		if post.image.exists
+			a(href='/post/' + post.slug)
+				img.load(src=post._.image.fit(900,900))
+
+		
+
+		
+		aside
+			if post.categories && post.categories.length
+				| 
+				each cat, i in post.categories
+					a(style="color:#{cat.color};" href='/cat/' + cat.key)= cat.name
+						
+			p #{post._.publishedDate.format('MMMM Do, YYYY')}
+
+		article
+			h3: a(href='/post/' + post.slug)= post.title
+
+			p!= post.content.brief
+		
+		footer				
+			if post.auteur && post.auteur.length
+				| 
+				each aut, i in post.auteur
+					| 
+					if aut.image.exists
+					.wrapauteur
+						.img-placeholder(style="background-image:url('#{aut._.image.fit(100,100)}');")
+						.auteurTextHome		
+							h4 #{aut.name}
+							span  — #{aut.position}
+					
+block content
+	if data.categories.length
+		nav
+			.wrap-nav
+				.nav-left
+					h3 Tags
+					if data.taggy
+						ul
+							each taggies in data.taggy
+								a(href='/tag/' + taggies.key,)
+									li #{taggies.name}
+
+								
+
+				.nav-middle
+					h3 Categories
+				
+					ul
+						each cat in data.categories
+							li
+								span(style="background:#{cat.color};")
+								a(href='/cat/' + cat.key, class=data.category && data.category.id == cat.id ? 'active' : false)= cat.name
+								
+
+				.nav-right 
+					input(type="text" placeholder="search")
+	
+	if data.category
+		.cat-tag-title
+			h2(style="color:#{data.category.color};") #{data.category.name}
+			if data.posts.results.length == 1 
+				span #{data.posts.results.length} post
+			else if data.posts.results.length == 0
+				span #{data.posts.results.length} post
+			else 
+				span #{data.posts.results.length} posts
+
+	if data.tags
+		.cat-tag-title
+			h2 #{data.tags.name}
+			if data.posts.results.length == 1 
+				span #{data.posts.results.length} post
+			else if data.posts.results.length == 0
+				span #{data.posts.results.length} post
+			else 
+				span #{data.posts.results.length} posts
+
+	if data.auteur.name
+		.cat-tag-title
+			h2 #{data.auteur.name}
+			if data.posts.results.length == 1 
+				span #{data.posts.results.length} post
+			else if data.posts.results.length == 0
+				span #{data.posts.results.length} post
+			else 
+				span #{data.posts.results.length} posts
+
+	
+	
+	.wrap
+		.grid-sizer
+		.gutter-sizer
+
+		each post in data.posts.results
+			+post(post)
+	
+	if data.posts.totalPages > 1
+		ul.pagination
+			if data.posts.previous
+				li: a(href='?page=' + data.posts.previous): span.chevron-left
+					img(alt="Chevron Left" src="/images/chevron_left.svg")
+			else
+				li.disabled: a(href='?page=' + 1): span.chevron-left
+					img(alt="Chevron Left" src="/images/chevron_left.svg")
+			each p, i in data.posts.pages
+				li(class=data.posts.currentPage == p ? 'active' : null)
+					a(href='?page=' + (p == '...' ? (i ? data.posts.totalPages : 1) : p ))= p
+			if data.posts.next
+				li: a(href='?page=' + data.posts.next): span.chevron-right
+					img(alt="Chevron Left" src="/images/chevron_right.svg")
+			else
+				li.disabled: a(href='?page=' + data.posts.totalPages): span.chevron-right
+					img(alt="Chevron Left" src="/images/chevron_right.svg")
+	else
+		if data.category
+			h3.text-muted
+		else
+			h3.text-muted
+	
+	if data.category
+		if data.posts.results.length < 1
+			p.notif Oops! Looks like there is nothing in this category. Please try an other. 
+
+	if data.tags
+		if data.posts.results.length < 1
+			p.notif Oops! Looks like there is nothing in with tag name. Please try an other. 
+
+	if data.auteur
+		if data.posts.results.length < 1
+			p.notif Oops! Looks like this author didn't write an article yet. 
